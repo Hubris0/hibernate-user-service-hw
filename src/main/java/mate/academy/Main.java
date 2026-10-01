@@ -7,14 +7,16 @@ import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
 import mate.academy.model.User;
+import mate.academy.security.AuthenticationException;
 import mate.academy.security.AuthenticationService;
+import mate.academy.security.RegistrationException;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 import mate.academy.service.UserService;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws RegistrationException, AuthenticationException {
         Injector injector = Injector.getInstance("mate.academy");
         String email = "random@mate.com";
         String password = "verystrongpassword";

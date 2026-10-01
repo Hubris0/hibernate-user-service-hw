@@ -1,11 +1,11 @@
 package mate.academy.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.util.Arrays;
 
 @Entity
 @Table(name = "users")
@@ -15,6 +15,7 @@ public class User {
     private Long id;
     private String login;
     private String password;
+    @Column(unique = true)
     private String email;
     private byte[] salt;
 
@@ -72,9 +73,7 @@ public class User {
         return "User{"
                 + "id=" + id
                 + ", login='" + login + '\''
-                + ", password='" + password + '\''
                 + ", email='" + email + '\''
-                + ", salt=" + Arrays.toString(salt)
                 + '}';
     }
 }

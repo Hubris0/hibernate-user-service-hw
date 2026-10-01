@@ -2,6 +2,7 @@ package mate.academy.dao.impl;
 
 import java.util.Optional;
 import mate.academy.dao.UserDao;
+import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
@@ -42,6 +43,8 @@ public class UserDaoImpl implements UserDao {
             return session.createQuery("from User u where u.email = :email", User.class)
                     .setParameter("email", email)
                     .uniqueResultOptional();
+        } catch (Exception e) {
+            throw new DataProcessingException("Couldn't find an email: " + email + " in DB",e);
         }
     }
 }
