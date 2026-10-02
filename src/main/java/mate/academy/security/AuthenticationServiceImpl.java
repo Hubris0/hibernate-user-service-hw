@@ -6,6 +6,8 @@ import mate.academy.model.User;
 import mate.academy.service.UserService;
 import mate.academy.util.HashUtil;
 
+import java.util.Optional;
+
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
 
@@ -26,13 +28,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        User user = userService.findByEmail(email)
-                .orElseThrow(() -> new AuthenticationException(
-                        "User with email: " + email + " could not be found"));
-        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (!user.getPassword().equals(hashedPassword)) {
-            throw new AuthenticationException("Incorrect password");
+        Optional<User> userOptional = userService.findByEmail(email);
+        boolean isValid = userOptional.map(user -> user
+                .getPassword()
+                .equals(HashUtil
+                        .hashPassword(password, user
+                                .getSalt())))
+                .orElse(false);
+
+        if (!isValid) {
+            throw new AuthenticationException("Incorrect email or password");
         }
-        return user;
+        return userOptional.get();
     }
 }
